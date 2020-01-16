@@ -3,11 +3,14 @@ const mongoose = require('mongoose');
 const userService = require('./services/user.service');
 const postService = require('./services/post.service');
 
+import bodyParser from 'body-parser';
+import server from './apolloServer';
+
 const connectionString = 'mongodb://demoUser:demoPassword@127.0.0.1:27017/demo';
 mongoose.connect(connectionString);
 const db = mongoose.connection;
 const app = express();
-const port = 3200;
+const port = 3220;
 db.on('error', (error) => console.log(error));
 
 app.get('/user', async (req, res) => {
@@ -30,4 +33,5 @@ app.get('/user?/:id/post/create/:title', async (req, res) => {
     res.json(data);
 });
 
+server.applyMiddleware({app});
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
